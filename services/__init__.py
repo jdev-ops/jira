@@ -21,8 +21,10 @@ def get_all_issues():
     }
     while jira_result["startAt"] + len(
             jira_result["issues"]) < jira_result["total"]:
-        url = url_template.format(base_url, rapidView, jira_result["startAt"],
-                                  jira_result["maxResults"])
+        url = url_template.format(
+            base_url, rapidView,
+            jira_result["startAt"] + len(jira_result["issues"]),
+            jira_result["maxResults"])
         res = requests.get(url, auth=user_auth)
         if res.status_code == 200:
             jira_result = res.json()
