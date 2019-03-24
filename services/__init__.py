@@ -1,4 +1,3 @@
-import json
 import os
 import requests
 import logging
@@ -32,14 +31,16 @@ def get_all_issues():
         else:
             logging.error("requests problem: {}".format(res.status_code))
 
-    no_assignee = []
-    for i in issues:
-        if not i["fields"]["assignee"] and i["fields"]["sprint"]:
-            no_assignee.append({
-                "k": i["key"],
-                "p": i["fields"]["priority"]["name"],
-                "sp": i["fields"]["sprint"]["name"],
-                "s": i["fields"]["summary"],
-                "d": i["fields"]["description"],
-            })
+    no_assignee = {}
+    index = 1
+    for issue in issues:
+        if not issue["fields"]["assignee"] and issue["fields"]["sprint"]:
+            no_assignee[index] = {
+                "k": issue["key"],
+                "pn": issue["fields"]["priority"]["name"],
+                "sn": issue["fields"]["sprint"]["name"],
+                "s": issue["fields"]["summary"],
+                "d": issue["fields"]["description"],
+            }
+            index += 1
     return no_assignee
